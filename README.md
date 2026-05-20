@@ -4,7 +4,7 @@
 This repository contains the data pipeline for a loan default prediction system built using the Medallion Architecture (Bronze → Silver → Gold).
 
 ## Project Structure
-cs611_assignment1/
+CS611_MLE_Assignment_1/
 ├── main.py                    # Main pipeline entry point
 ├── Dockerfile                 # Docker container setup
 ├── docker-compose.yaml        # Docker compose configuration
