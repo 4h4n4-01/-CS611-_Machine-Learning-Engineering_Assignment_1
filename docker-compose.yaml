@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  cs611-pipeline:
+    build: .
+    container_name: CS611_MLE_Assignment_1
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app          # mount the project so all the changes that will be made are reflected live
+    environment:
+      - PYTHONUNBUFFERED=1
+    # JupyterLab starts automatically once main.py is run from within the terminal
+    # the once it is laucnehd, inside JupyterLab, open a terminal and run: python main.py
