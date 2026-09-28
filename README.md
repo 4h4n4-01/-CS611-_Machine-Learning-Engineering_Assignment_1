@@ -1,62 +1,41 @@
-# -CS611-_Machine-Learning-Engineering_Assignment_1
+# Loan Default Data Pipeline (Medallion Architecture)
 
-## Overview
-This repository contains the data pipeline for a loan default prediction system built using the Medallion Architecture (Bronze → Silver → Gold).
+SMU CS611 Machine Learning Engineering, Assignment 1 (2026). A reproducible data pipeline that turns raw loan, customer and clickstream data into a leakage-safe feature store and label store for default prediction. Assignment 2 builds on it: [end-to-end pipeline with Airflow and monitoring](https://github.com/4h4n4-01/cs611-loan-default-airflow-mlops).
 
-## Project Structure
-CS611_MLE_Assignment_1/
-├── main.py                    # Main pipeline entry point
-├── Dockerfile                 # Docker container setup
-├── docker-compose.yaml        # Docker compose configuration
-├── requirements.txt           # Python dependencies
-├── Readme.txt                 # GitHub repo link
-├── EDA.ipynb                  # Exploratory Data Analysis notebook
-├── ML Model Training.ipynb    # ML sanity check notebook 
-├── data/                      # Raw CSV data files
-└── utils/
-├── bronze.py              # Bronze layer: raw ingestion
-├── silver.py              # Silver layer: cleaning & standardisation
-└── gold.py                # Gold layer: feature store & label store
+## Design
 
-## Steps to make this run: 
-
-### Step 1: Build Docker container
-```bash
-docker-compose build
-```
-
-### Step 2: Start JupyterLab
-```bash
-docker-compose up
-```
-Open the link shown in terminal (http://127.0.0.1:8888/lab)
-
-### Step 3: Run the pipeline
-In JupyterLab terminal:
-```bash
-python main.py
-```
-
-## Output
-Running `main.py` creates a `datamart/` folder that shall constitute:
-- `datamart/bronze/` - Raw copies of source CSVs
-- `datamart/silver/` - Cleaned and standardised tables
-- `datamart/gold/` - ML-ready feature store and label store
-
-## Data Pipeline
-| Layer | Tables | Description |
+| Layer | Tables | What happens |
 |---|---|---|
-| Bronze | 4 tables | Raw ingestion of CSV files |
-| Silver | 4 tables | Cleaned, typed, PII-removed |
-| Gold | 2 tables | ML-ready feature store + label store |
+| Bronze | 4 | Raw CSVs ingested verbatim |
+| Silver | 4 | Typed, cleaned, standardised; personal data (name, SSN) removed |
+| Gold | 2 | ML-ready feature store and label store |
 
-## Key Design Decisions
-- **No data leakage**: Features only use data available before loan start date
-- **PII removal**: Name and SSN removed in silver layer
-- **Default label**: is_default = 1 if overdue_amt > 0 at final installment
-- **70 features**: Demographics + financials + clickstream aggregates
+- **No leakage:** features use only information available before the loan start date.
+- **Label:** `is_default = 1` if an overdue amount remains at the final instalment.
+- **Features:** 70 (demographics, financials, clickstream aggregates).
 
 ## Results
-- 12,500 loans processed
-- 28.8% default rate
-- ML sanity check accuracy: 79.4%
+
+- 12,500 loans processed; 28.8% default rate.
+- Sanity-check model on the gold tables: 79.4% accuracy (a check that the feature store is usable, not a tuned model).
+
+## Run
+
+```bash
+docker-compose build
+docker-compose up          # open the JupyterLab link shown in the terminal
+python main.py             # in the JupyterLab terminal
+```
+
+Output: `datamart/bronze`, `datamart/silver`, `datamart/gold`.
+
+## Repository
+
+```
+main.py                    pipeline entry point
+utils/bronze.py, silver.py, gold.py
+EDA.ipynb                  exploratory analysis
+ML Model Training.ipynb    sanity-check model
+data/                      raw CSVs
+Dockerfile, docker-compose.yaml, requirements.txt
+```
