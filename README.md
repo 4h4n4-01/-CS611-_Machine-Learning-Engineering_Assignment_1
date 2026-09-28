@@ -1,6 +1,6 @@
 # Loan Default Data Pipeline (Medallion Architecture)
 
-SMU CS611 Machine Learning Engineering, Assignment 1 (2026). A reproducible data pipeline that turns raw loan, customer and clickstream data into a leakage-safe feature store and label store for default prediction. Assignment 2 builds on it: [end-to-end pipeline with Airflow and monitoring](https://github.com/4h4n4-01/cs611-loan-default-airflow-mlops).
+SMU Machine Learning Engineering course, Assignment 1 (2026). A reproducible data pipeline that turns raw loan, customer and clickstream data into a leakage-safe feature store and label store for default prediction. Assignment 2 builds on it: [end-to-end pipeline with Airflow and monitoring](https://github.com/4h4n4-01/loan-default-airflow-mlops).
 
 ## Design
 
